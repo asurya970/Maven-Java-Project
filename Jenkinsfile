@@ -4,10 +4,11 @@ def remote = [:]
     	remote.host = '192.168.33.15'
     	remote.user = 'root'
     	remote.password = 'vagrant'
+        remote.allowAnyHosts = true
     	remote.host = '192.168.56.65'
     	remote.user = 'ansible-a'
     	remote.password = 'vagrant'
-    	remote.allowAnyHosts = true
+    	
 pipeline {
     
 	agent none
@@ -19,7 +20,7 @@ pipeline {
 		        label 'slave'
 		    }
 		    steps {
-			    git 'https://github.com/venkat09docs/Maven-Java-Project.git'
+			    git 'https://github.com/aravindreddy674/Maven-Java-Project.git'
 			    stash 'Source'
 			    script{
 			        mvnHome = tool 'maven3.6'
@@ -62,7 +63,7 @@ pipeline {
 		    //SCP-Publisher Plugin (Optional)
 		    steps {
 		        //sshScript remote: remote, script: "abc.sh"  	
-			sshPut remote: remote, from: 'target/java-maven-1.0-SNAPSHOT.war', into: '/root/workspace/stagingserver/webapps/webapp1.war'		        
+			sshPut remote: remote, from: 'target/java-maven-1.0-SNAPSHOT.war', into: '/root/workspace/stagingserver/webapps'		        
 		    }
     	}
     	stage ('Integration-Test') {

@@ -4,6 +4,9 @@ def remote = [:]
     	remote.host = '192.168.33.15'
     	remote.user = 'root'
     	remote.password = 'vagrant'
+    	remote.host = '192.168.56.65'
+    	remote.user = 'ansible-a'
+    	remote.password = 'vagrant'
     	remote.allowAnyHosts = true
 pipeline {
     
@@ -59,7 +62,7 @@ pipeline {
 		    //SCP-Publisher Plugin (Optional)
 		    steps {
 		        //sshScript remote: remote, script: "abc.sh"  	
-			sshPut remote: remote, from: 'target/java-maven-1.0-SNAPSHOT.war', into: '/root/workspace/stagingserver/webapps/aa.war'		        
+			sshPut remote: remote, from: 'target/java-maven-1.0-SNAPSHOT.war', into: '/root/workspace/stagingserver/webapps'		        
 		    }
     	}
     	stage ('Integration-Test') {
@@ -95,7 +98,8 @@ pipeline {
             }
 			steps {
 				unstash 'Source'
-				sh "'${mvnHome}/bin/mvn' clean package"				
+				sh "'${mvnHome}/bin/mvn' clean deploy"
+				sshPut remote: remote, from: 'target/java-maven-1.0-SNAPSHOT.war', into: '/home/ansible-a/workspace/ansible-files/ansibleRoles/tomcat/files'
 			}
 			post {
 				always {

@@ -6,6 +6,7 @@ def remote = [:]
     	remote.password = 'vagrant'
         remote.allowAnyHosts = true
 def remote1 = [:]
+        remote1.name = 'deploy1'
     	remote1.host = '192.168.56.65'
     	remote1.user = 'ansible-a'
     	remote1.password = 'vagrant'
